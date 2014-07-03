@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Authors feature.
- */
-
-include_once 'authors.features.inc';
