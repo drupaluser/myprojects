@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Author content type feature.
+ */
+
+include_once 'author_content_type.features.inc';
