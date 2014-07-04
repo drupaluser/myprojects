@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the books_content_type feature.
+ */
+
+include_once 'books_content_type.features.inc';
