@@ -71,7 +71,7 @@
     }
   }
 
-  /**
+/**
  * Implements hook_submit().
  */
   function page_form_submit($form, &$form_state) {
@@ -192,3 +192,42 @@
       }
     }
   }
+
+/**
+ * Add new block with last Authors
+ * Implements hook_block_info().
+ */
+  function my_form_block_info() {
+    $blocks['authors'] = array(
+      'info' => t('Authors'),
+      'cache' => DRUPAL_CACHE_GLOBAL,
+    );
+    return $blocks;
+  }
+
+/**
+ * Implements hook_block_view().
+ */
+  function my_form_block_view($delta = '') {
+    $block =array();
+    if ($delta == 'authors') {
+      $block['subject'] = t('Authors');
+      $block['content'] = _show_node_titles_with_link();
+    }
+    return $block;
+  }
+
+/**
+ *Implements my function who get from database content
+ */
+  function _show_node_titles_with_link() {
+    $titles = db_query("SELECT DISTINCT(writer), anid FROM (SELECT books.title AS book, books.nid, author.title AS writer, author.nid AS anid FROM {node} AS books
+      INNER JOIN field_data_field_author AS relation ON relation.entity_id = books.nid
+      LEFT JOIN node AS author ON relation.field_author_target_id = author.nid AND author.type = 'author' WHERE books.type = 'books' AND books.status = 1 ORDER BY books.changed DESC) AS results LIMIT 5");
+
+      $items = array();
+      foreach ($titles as $title) {
+        $items[] = l($title->writer, 'node/' . $title->anid);
+      }
+      return theme('item_list', array('items' => $items));
+   }
